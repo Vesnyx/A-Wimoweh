@@ -12,14 +12,17 @@ def databaseParser():
     print("Parsing copmleted.")
 
 def traktData( file ):
-    data = []
+    #data = []
     with open(file, 'r') as idList, open('traktData.txt', 'a') as traktOutput, open('failed.txt', 'a') as failedOutput:
         for id in idList:
             print("Getting data for " + id.strip('\n'))
             dataLookup = Trakt['search'].lookup(id.strip('\n'), media = 'show', extended = 'full', service = 'imdb')
             if dataLookup is not None:
-                data.append(dataLookup)
+                print('Data found for ' + id.strip('\n') + '\r')
+                traktOutput.write(json.encode(dataLookup) + '\n')
+                #data.append(dataLookup)
             else:
+                print('No data found for ' + id.strip('\n') + '\r')
                 failedOutput.write(id)
-        traktOutput.write(json.encode(data))
+        #traktOutput.write(json.encode(data))
         
